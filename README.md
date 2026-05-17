@@ -79,6 +79,43 @@ with observer.trace(model="gemini-2.5-pro", prompt="...", agent="researcher") as
 PYTHONPATH=src pytest -q
 ```
 
+## Azure OpenAI
+
+For Azure agents, swap `GeminiObserver` for `AzureObserver`:
+
+```python
+from geminilens.azure import AzureObserver, make_azure_client
+
+observer = AzureObserver()
+client = make_azure_client()
+with observer.trace("gpt-4o-mini", prompt="...") as tr:
+    resp = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": "..."}],
+    )
+    observer.record_response(tr, resp)
+```
+
+Cost is computed from the published Azure OpenAI pricing for gpt-4.1 /
+gpt-4o / o3 / o4 families.
+
+## Export to Dynatrace
+
+```python
+from geminilens.exporters import DynatraceExporter
+
+exporter = DynatraceExporter()  # reads DT_ENV_URL + DT_API_TOKEN
+observer = GeminiObserver(on_trace=exporter.export_one)
+```
+
+Set the env vars, give the API token `logs.ingest` scope, and every trace
+lands as a structured log event with `gen_ai.usage.*` attributes.
+
+## Deploy
+
+See [docs/deploy.md](docs/deploy.md) for a one-shot `gcloud run deploy`.
+The included Dockerfile is Cloud Run compatible.
+
 ## Repo layout
 
 ```
@@ -89,9 +126,15 @@ src/geminilens/      core library
   store.py           JSONL + in-memory trace store
   guard.py           egress allowlist (httpx transport)
   agent.py           reference ResearchAgent using all of the above
+  azure.py           Azure OpenAI adapter (same Trace shape, MS pricing)
+  exporters/
+    dynatrace.py     ship traces to Dynatrace Log Ingestion API
+    jsonl_file.py    append traces to a JSONL file
 app/dashboard.py     Streamlit dashboard
-examples/            runnable quickstart
-tests/               pytest suite
+examples/            quickstart + Dynatrace export demo
+docs/                deploy guide, demo script, per-hackathon submission copy
+Dockerfile           Cloud Run / Azure Container Apps image
+tests/               pytest suite (19 tests)
 ```
 
 ## Why this exists
