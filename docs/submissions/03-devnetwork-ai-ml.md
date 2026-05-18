@@ -40,7 +40,7 @@ project.
 ## Try it out
 - Code repo: https://github.com/MukundaKatta/geminilens
 - Hosted dashboard: https://geminilens-1029931682737.us-central1.run.app
-- Demo video: <PASTE_URL_HERE>
+- Demo video: https://storage.googleapis.com/geminilens-demo-mukunda/geminilens-demo.mp4
 
 ## Open question before submitting
 Do we have a TrueFoundry account? If not, signup is free with a work

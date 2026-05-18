@@ -5,6 +5,7 @@ get traces, cost, latency, drift, and tool-call audit out of the box. Ships
 with a Streamlit dashboard.
 
 **Live demo:** https://geminilens-1029931682737.us-central1.run.app
+**Demo video:** https://storage.googleapis.com/geminilens-demo-mukunda/geminilens-demo.mp4 (2:13, 3 MB)
 **License:** Apache 2.0
 
 ## What it does

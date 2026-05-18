@@ -73,7 +73,7 @@ google-cloud-run, dynatrace, httpx, pandas, opentelemetry
 ## Try it out links (Devpost asks for these)
 - Code repo: https://github.com/MukundaKatta/geminilens
 - Live demo (Cloud Run): https://geminilens-1029931682737.us-central1.run.app
-- Demo video (YouTube unlisted): <PASTE_VIDEO_URL_HERE>
+- Demo video (MP4, public GCS): https://storage.googleapis.com/geminilens-demo-mukunda/geminilens-demo.mp4
 
 ## Submission checklist
 - [ ] Code repo URL public on GitHub
