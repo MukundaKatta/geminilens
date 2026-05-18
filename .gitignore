@@ -14,3 +14,4 @@ build/
 .geminilens/
 traces.jsonl
 *.log
+.video-build/
