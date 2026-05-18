@@ -38,6 +38,10 @@ st.caption(
 
 observer = get_observer()
 
+# Auto-seed on cold start so reviewers see a populated dashboard.
+if not observer.store.recent():
+    simulate(observer, n=50)
+
 with st.sidebar:
     st.header("Run an agent")
     q = st.text_input("Question", value="What is Vertex AI Agent Builder?")
