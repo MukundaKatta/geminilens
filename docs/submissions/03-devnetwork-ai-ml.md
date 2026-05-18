@@ -39,7 +39,7 @@ project.
 
 ## Try it out
 - Code repo: https://github.com/MukundaKatta/geminilens
-- Hosted dashboard: <PASTE_URL_HERE>
+- Hosted dashboard: https://geminilens-1029931682737.us-central1.run.app
 - Demo video: <PASTE_URL_HERE>
 
 ## Open question before submitting

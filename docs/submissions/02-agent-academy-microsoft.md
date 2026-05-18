@@ -51,7 +51,7 @@ table in the README.
 
 ## Try it out
 - Code repo: https://github.com/MukundaKatta/geminilens
-- Live demo (Azure Container Apps): <PASTE_ACA_URL_HERE>
+- Live demo (Cloud Run, runs the Gemini side; Azure adapter shown via tests + code walkthrough in the video): https://geminilens-1029931682737.us-central1.run.app
 - Demo video (YouTube unlisted): <PASTE_VIDEO_URL_HERE>
 
 ## What's left before submission

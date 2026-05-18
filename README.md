@@ -4,7 +4,8 @@ Drop-in observability for Gemini agents. Wrap any Vertex AI Gemini call and
 get traces, cost, latency, drift, and tool-call audit out of the box. Ships
 with a Streamlit dashboard.
 
-Open source under Apache 2.0.
+**Live demo:** https://geminilens-1029931682737.us-central1.run.app
+**License:** Apache 2.0
 
 ## What it does
 
