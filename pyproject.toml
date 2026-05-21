@@ -1,7 +1,7 @@
 [project]
 name = "geminilens"
-version = "0.1.0"
-description = "Drop-in observability for Gemini agents: traces, cost, drift, egress allowlist."
+version = "0.2.0"
+description = "Drop-in observability for Gemini agents: traces, cost, drift, egress allowlist. Ships exporters for Arize Phoenix, Splunk HEC, Elastic, GitLab Observability, MongoDB Atlas, Dynatrace, TrueFoundry."
 readme = "README.md"
 license = { text = "Apache-2.0" }
 authors = [{ name = "Mukunda Katta" }]
