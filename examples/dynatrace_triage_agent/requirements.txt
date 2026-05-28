@@ -1,0 +1,9 @@
+# Dynatrace Triage Agent (Google Cloud Rapid Agent, Dynatrace track)
+# Pin to the latest versions at build time.
+google-adk>=1.0.0
+google-cloud-aiplatform>=1.60.0
+python-dotenv>=1.0
+# Optional UI:
+streamlit>=1.40
+# Optional observability differentiator (install from your geminilens clone):
+# geminilens

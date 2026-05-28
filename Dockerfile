@@ -14,7 +14,11 @@ COPY examples ./examples
 COPY README.md LICENSE ./
 
 RUN pip install . \
- && pip install streamlit pandas httpx pydantic google-genai
+ && pip install streamlit pandas httpx pydantic google-genai \
+ && pip install google-adk python-dotenv
+# google-adk + python-dotenv power the examples/dynatrace_triage_agent page
+# (app/pages/1_Ask_the_Triage_Agent.py). Set GOOGLE_CLOUD_PROJECT, DT_ENVIRONMENT,
+# and DT_PLATFORM_TOKEN on the Cloud Run service for the agent to answer live.
 
 RUN mkdir -p /data && chmod 777 /data
 
