@@ -39,3 +39,14 @@ def test_cached_input_discount():
 def test_unknown_model_returns_zero():
     cost = gemini_cost("gemini-9.9-supernova", input_tokens=1000, output_tokens=1000)
     assert cost.total_usd == 0.0
+
+
+def test_dated_flash_lite_resolves_to_flash_lite_not_flash():
+    # "gemini-2.5-flash-lite-*" also starts with the "gemini-2.5-flash"
+    # prefix; the longest matching prefix must win so a dated flash-lite model
+    # is billed at flash-lite rates, not the ~3-6x more expensive flash rates.
+    lite = gemini_cost("gemini-2.5-flash-lite-preview-2026", 100_000, 10_000)
+    lite_exact = gemini_cost("gemini-2.5-flash-lite", 100_000, 10_000)
+    flash = gemini_cost("gemini-2.5-flash", 100_000, 10_000)
+    assert lite.total_usd == lite_exact.total_usd
+    assert lite.total_usd < flash.total_usd

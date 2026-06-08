@@ -23,6 +23,16 @@ def test_unknown_model_zero():
     assert azure_cost("not-a-model", 1000, 1000) == 0.0
 
 
+def test_dated_mini_resolves_to_mini_not_full():
+    # "gpt-4o-mini-*" also starts with the "gpt-4o" prefix; the longest
+    # matching prefix must win so a mini deployment is not billed at the
+    # ~16x more expensive gpt-4o rate.
+    assert azure_cost("gpt-4o-mini-2026-01-01", 1_000_000, 0) == 0.15
+    assert azure_cost("gpt-4o-mini-2026-01-01", 1_000_000, 0) < azure_cost(
+        "gpt-4o", 1_000_000, 0
+    )
+
+
 def test_observer_records_usage_and_cost(tmp_path):
     store = TraceStore(tmp_path / "az.jsonl")
     obs = AzureObserver(store=store)
