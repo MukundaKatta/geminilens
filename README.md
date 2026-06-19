@@ -77,9 +77,25 @@ with observer.trace(model="gemini-2.5-pro", prompt="...", agent="researcher") as
 
 ## Tests
 
+The pure-Python core (cost, drift, trace store, observer, Azure adapter) has a
+**dependency-free** test suite that runs with only the standard library — no
+`pip install`, no GCP/Azure credentials:
+
 ```bash
+PYTHONPATH=src python3 -m unittest discover -s tests/unit
+```
+
+The full suite (which also covers the `httpx`-based egress guard and the
+exporters) runs under `pytest` once the dev/exporter extras are installed:
+
+```bash
+pip install -e ".[dev,exporters]"
 PYTHONPATH=src pytest -q
 ```
+
+Only the egress guard depends on `httpx`; importing `geminilens` and using the
+observer, cost calculator, drift report, and trace store works even when
+`httpx` is not installed (the guard is loaded lazily on first use).
 
 ## Azure OpenAI
 
@@ -129,14 +145,21 @@ src/geminilens/      core library
   guard.py           egress allowlist (httpx transport)
   agent.py           reference ResearchAgent using all of the above
   azure.py           Azure OpenAI adapter (same Trace shape, MS pricing)
-  exporters/
-    dynatrace.py     ship traces to Dynatrace Log Ingestion API
+  exporters/         ship traces to external backends
+    dynatrace.py     Dynatrace Log Ingestion API
+    arize_phoenix.py Arize Phoenix (OpenTelemetry)
+    splunk_hec.py    Splunk HTTP Event Collector
+    elastic.py       Elasticsearch / Elastic Observability
+    gitlab.py        GitLab Observability
+    mongodb_atlas.py MongoDB Atlas
+    truefoundry.py   TrueFoundry AI Gateway
     jsonl_file.py    append traces to a JSONL file
 app/dashboard.py     Streamlit dashboard
 examples/            quickstart + Dynatrace export demo
 docs/                deploy guide, demo script, per-hackathon submission copy
 Dockerfile           Cloud Run / Azure Container Apps image
-tests/               pytest suite (19 tests)
+tests/               pytest suite (exporters + guard)
+tests/unit/          dependency-free standard-library unittest suite
 ```
 
 ## Why this exists

@@ -31,14 +31,25 @@ _AZURE_OPENAI_PRICING = {
 }
 
 
+def _resolve_azure(model: str) -> tuple[float, float, float] | None:
+    prices = _AZURE_OPENAI_PRICING.get(model)
+    if prices is not None:
+        return prices
+    # Prefix fallback for dated / suffixed deployment names (e.g.
+    # "gpt-4o-mini-2026-01-01"). Match the *longest* prefix so a "gpt-4o-mini"
+    # deployment is not mis-billed at the more expensive "gpt-4o" rate, which
+    # is also a matching prefix.
+    best: tuple[float, float, float] | None = None
+    best_len = -1
+    for prefix, p in _AZURE_OPENAI_PRICING.items():
+        if model.startswith(prefix) and len(prefix) > best_len:
+            best, best_len = p, len(prefix)
+    return best
+
+
 def azure_cost(model: str, input_tokens: int, output_tokens: int, cached_tokens: int = 0) -> float:
     """USD cost for an Azure OpenAI call. Returns 0 for unknown models."""
-    prices = _AZURE_OPENAI_PRICING.get(model)
-    if prices is None:
-        for prefix, p in _AZURE_OPENAI_PRICING.items():
-            if model.startswith(prefix):
-                prices = p
-                break
+    prices = _resolve_azure(model)
     if prices is None:
         return 0.0
     in_rate, out_rate, cache_rate = prices

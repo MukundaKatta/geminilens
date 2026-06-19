@@ -32,10 +32,17 @@ class CostBreakdown:
 def _resolve(model: str) -> tuple[float, float, float, float] | None:
     if model in _PRICING_USD_PER_M:
         return _PRICING_USD_PER_M[model]
+    # Prefix fallback for dated / suffixed model ids (e.g.
+    # "gemini-2.5-flash-lite-preview-2026"). Match the *longest* prefix so that
+    # more specific families win: "gemini-2.5-flash-lite-..." must resolve to
+    # flash-lite pricing, not the cheaper-but-wrong "gemini-2.5-flash" prefix
+    # that also matches. Matching by insertion order would mis-bill these.
+    best: tuple[float, float, float, float] | None = None
+    best_len = -1
     for prefix, prices in _PRICING_USD_PER_M.items():
-        if model.startswith(prefix):
-            return prices
-    return None
+        if model.startswith(prefix) and len(prefix) > best_len:
+            best, best_len = prices, len(prefix)
+    return best
 
 
 def gemini_cost(
