@@ -4,6 +4,6 @@ google-adk>=1.0.0
 google-cloud-aiplatform>=1.60.0
 python-dotenv>=1.0
 # Optional UI:
-streamlit>=1.40
+streamlit>=1.59.2
 # Optional observability differentiator (install from your geminilens clone):
 # geminilens
